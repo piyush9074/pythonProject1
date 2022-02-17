@@ -5,24 +5,24 @@ from ..items import FarfetchItem
 
 class FarFetch(scrapy.Spider):
     name="farfetch"
-    # start_urls=['https://www.farfetch.com/fr/shopping/men/shoes-2/items.aspx']
-    start_urls = [
-        'http://quotes.toscrape.com/tag/humor/',
-    ]
+    start_urls=['https://www.farfetch.com/fr/shopping/men/shoes-2/items.aspx']
 
-    # def parse(self, response):
-    #     items = FarfetchItem()
-    #     print(response)
-    #     # name =response.xpath('//p[@data-component="ProductCardBrandName" and @itemprop="brand"]').get()
-    #     pass
-    #     # yield name
+
     def parse(self, response):
-        for quote in response.css('div.quote'):
-            yield {
-                'author': quote.xpath('span/small/text()').get(),
-                'text': quote.css('span.text::text').get(),
-            }
+        items = FarfetchItem()
+        main = response.xpath("//ul[@data-testid='product-card-list']/div")
 
-        next_page = response.css('li.next a::attr("href")').get()
-        if next_page is not None:
-            yield response.follow(next_page, self.parse)
+
+        for i in range(main):
+
+            brand =main.xpath('//p[@data-component="ProductCardBrandName" and @itemprop="brand"]//text()').extract()[i]
+            name =main.xpath('//p[@data-component="ProductCardDescription" and @itemprop="name"]//text()').extract()[i]
+            price = main.xpath('//div[@data-component="PriceBrief" and @itemprop="offers"]//p[@data-component="Price"]//text()').extract()[i]
+            image_url = main.xpath('//div[@data-component="ProductCardImageContainer"]//img[@data-component="ProductCardImagePrimary"]/@src').extract()[i]
+            link = main.xpath('//div[@data-component="ProductCard" and @itemprop="itemListElement"]//a[@data-component="ProductCardLink"]/@href').extract()[i]
+            items['brand']=brand
+            items['name'] = name
+            items['original_price'] = price
+            items['product_page_url'] = link
+
+            yield items
