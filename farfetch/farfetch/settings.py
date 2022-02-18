@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'farfetch.spiders'
 #USER_AGENT = 'farfetch (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 PROXY_POOL_ENABLED = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
