@@ -68,9 +68,9 @@ PROXY_POOL_ENABLED = False
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    'farfetch.pipelines.FarfetchPipeline': 300,
-# }
+ITEM_PIPELINES = {
+   'farfetch.pipelines.FarfetchPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -92,3 +92,4 @@ PROXY_POOL_ENABLED = False
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+CONNECTION_STRING = "mongodb+srv://pi9074:pi9074@picluster.nj0da.mongodb.net/sample_restaurants?retryWrites=true&w=majority"
