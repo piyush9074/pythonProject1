@@ -8,6 +8,7 @@ class FarFetch(scrapy.Spider):
     # start_urls=['https://www.farfetch.com/fr/shopping/men/shoes-2/items.aspx']
     start_urls=['https://www.farfetch.com/fr/shopping/women/bags-purses-1/items.aspx','https://www.farfetch.com/fr/shopping/men/shoes-2/items.aspx']
     pg_number=2
+    pg_number_women = 2
 
     def parse(self, response):
         items = FarfetchItem()
@@ -47,9 +48,14 @@ class FarFetch(scrapy.Spider):
         # next_page = response.xpath('//div/a[@data-testid="page-next"]/@href').extract()
         # print(next_page)
 
-
-        url=f"https://www.farfetch.com/fr/shopping/men/shoes-2/items.aspx?page={FarFetch.pg_number}&view=90&sort=3&scale=282"
+        if "men" in (response.request.url):
+            url=f"https://www.farfetch.com/fr/shopping/men/shoes-2/items.aspx?page={FarFetch.pg_number}&view=90&sort=3&scale=282"
+        if "women" in (response.request.url):
+            url = f"https://www.farfetch.com/fr/shopping/women/bags-purses-1/items.aspx?page={FarFetch.pg_number_women}&view=90&sort=3"
         # pg_str="https://www.farfetch.com/fr/shopping/men/shoes-2/items.aspx"
-        if (FarFetch.pg_number < 203):
+        if (FarFetch.pg_number < 215) and ("men" in response.request.url):
             FarFetch.pg_number +=  1
+            yield response.follow(url, callback=self.parse)
+        if (FarFetch.pg_number_women < 205) and ("women" in response.request.url):
+            FarFetch.pg_number_women += 1
             yield response.follow(url, callback=self.parse)

@@ -22,4 +22,4 @@ class FarFetch(scrapy.Spider):
         items['name']=next_page
         yield items
 
-        print(response.request.url)
+        print(type(response.request.url))
