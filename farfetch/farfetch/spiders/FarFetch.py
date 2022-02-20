@@ -23,9 +23,13 @@ class FarFetch(scrapy.Spider):
             image_url = main.xpath('//div[@data-component="ProductCardImageContainer"]//img[@data-component="ProductCardImagePrimary"]/@src').extract()[count]
             link = i.xpath('//div[@data-component="ProductCard" and @itemprop="itemListElement"]//a[@data-component="ProductCardLink"]/@href').extract()[count]
             # price=str(price)
+            # price.encode for removing the unicode error
             price = price.encode("ascii", "ignore")
+            # strip method remove any start or end space and float typecast the price
             price=float(price.decode().strip())
+            # if link contains women word the category will be set to as Bags and purses else it will be set to footwear
             product_category="Footwear"
+
             if "women" in link:
                 product_category="Bags and Purses"
 
@@ -33,7 +37,7 @@ class FarFetch(scrapy.Spider):
             items['name'] = str(name)
             items['original_price'] = price
             items['sale_price']=price
-            items['product_page_url'] = "farfetch.com"+link
+            items['product_page_url'] = "https://www.farfetch.com"+link
             items['image_url']=image_url
             items['product_category']=product_category
             count=count+1

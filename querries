@@ -1,0 +1,23 @@
+1. db.farfetch.find().count()
+2. db.farfetch.countDocuments({original_price:{$eq:"$sale_price"}})
+3. db.farfetch.countDocuments({$and:[{product_category:{$eq:"Bags and Purses"}},{original_price:{$ne:"$sale_price"}}]})
+4. db.farfetch.distinct("brand").length
+5. db.farfetch.aggregate(
+
+	[
+		{$match:{$expr:{$ne:["$original_price", "$sale_price"]}}},
+		{$group:{_id:"$brand",countofdiscountedproduct:{$sum:1}}}
+
+	])
+6. db.farfetch.countDocuments({"name" : {$regex : "shoe"}})
+7. db.farfetch.countDocuments({sale_price:{$gt:300}})
+8.
+9. db.farfetch.countDocuments({$and:[{sale_price:{$eq:{$divide:["$original_price",2]}}},{product_category:{$eq:"Footwear"}}]})
+10. db.farfetch.aggregate(
+
+	[
+		{$match:{product_category:"Footwear"}},
+		{$group:{_id:"$brand",countofitemssold:{$sum:1}}},
+		{$sort:{countofitemssold:-1}},
+		{ $limit : 1 }
+	])
