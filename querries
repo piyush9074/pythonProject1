@@ -11,7 +11,7 @@
 	])
 6. db.farfetch.countDocuments({"name" : {$regex : "shoe"}})
 7. db.farfetch.countDocuments({sale_price:{$gt:300}})
-8.
+8.db.farfetch.find({"sale_price" : { $gt: [{$multiply: [{ $divide: [{$subtract: ["$sale_price", "“$original_price"]}, "$original_price"]} , 100]} , 30] }}).count()
 9. db.farfetch.countDocuments({$and:[{sale_price:{$eq:{$divide:["$original_price",2]}}},{product_category:{$eq:"Footwear"}}]})
 10. db.farfetch.aggregate(
 
